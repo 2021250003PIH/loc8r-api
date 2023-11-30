@@ -4,7 +4,7 @@ const apiOptions = {
     server: 'http://localhost:3000'
 };
 if(process.env.NODE_ENV === 'production'){
-    apiOptions.server = 'https://loc8r-api-shx5.onrender.com'; // 임시로 지정한 URL
+    apiOptions.server = 'https://loc8r-api-5udu.onrender.com/'; // 임시로 지정한 URL
 };
 
 const homelist = function(req, res){
