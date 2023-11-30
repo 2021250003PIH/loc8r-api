@@ -1,0 +1,58 @@
+extends layout
+include _includes/sharedHTMLfunctions
+
+block content
+  .row.banner
+    .col-12
+      h1= pageHeader.title
+  .row
+    .col-12.col-lg-9
+      .row
+        .col-12.col-md-6
+          p.rating
+            +outputRating(location.rating)
+          p= location.address
+          .card.card-primary
+            .card-block
+              h2.card-title.text-light Opening hours
+              each time in location.openingTimes
+                p.card-text.text-light
+                  | #{time.days} :
+                  if time.closed
+                    | closed
+                  else
+                    | #{time.opening} - #{time.closing}
+          .card.card-primary
+            .card-block
+              h2.card-title.text-light Facilities
+              each facility in location.facilities
+                span.badge.badge-warning.bg-warning.text-body
+                  i.fa.fa-check
+                  | &nbsp;#{facility}
+                | &nbsp;
+        .col-12.col-md-6.location-map
+          .card.card-primary
+            .card-block
+              h2.card-title.text-light Location map
+              img.img-fluid.rounded(src=`https://maps.googleapis.com/maps/api/staticmap?center=${location.coords.lat},${location.coords.lng}&zoom=17&size=400x350&sensor=false&markers=${location.coords.lat},${location.coords.lng}&key=AIzaSyBhP6lqwz2EGGcLTsw1y_kym4l6LKDzPc4&scale=2`)
+      .row
+        .col-12
+          .card.card-primary.review-card
+            .card-block
+              a.btn.btn-primary.float-right.float-end(href=`/location/${location._id}/review/new`) Add review
+              h2.card-title.text-light Customer reviews
+              each review in location.reviews
+                .row.review
+                  .col-12.no-gutters.review-header
+                    span.rating
+                      +outputRatingLight(review.rating)
+                    | &nbsp;
+                    span.reviewAuthor.text-light #{review.author}
+                    | &nbsp;&nbsp;
+                    small.reviewTimeStamp.text-light
+                      +formatDate(review.createdOn)
+                .col-12
+                  p.text-light !{(review.reviewText).replace(/\n/g, '<br/>')}
+    .col-12.col-lg-3
+      p.lead.text-light #{location.name} #{sidebar.context}
+      p.text-light= sidebar.callToAction
